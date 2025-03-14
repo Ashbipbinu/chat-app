@@ -103,11 +103,9 @@ export const updateProfile = async (req, res) => {
 
     const userId = req.user._id
 
-    const updatedUser = await User.findByIdAndUpdate(userId, {profilePic: profileResponse.secure_url}, {new: true})
+    const updatedUser = await User.findByIdAndUpdate(userId, {profilePic: profileResponse.secure_url}, {new: true}).select("-password")
     
-    const filteredData = Object.fromEntries(Object.entries(updatedUser).filter(([key, val]) => key !== 'password'))
-
-    res.status(200).josn(filteredData)
+    res.status(200).json(updatedUser)
 
   } catch (error) {
     console.log("Something went wrong in updated profile !!")
